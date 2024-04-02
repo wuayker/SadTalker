@@ -82,20 +82,38 @@ def main(args):
 
     #audio2ceoff
     batch = get_data(first_coeff_path, audio_path, device, ref_eyeblink_coeff_path, still=args.still)
+
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"Audio Data batched in: {event_marker - start_time} seconds")
+
     coeff_path = audio_to_coeff.generate(batch, save_dir, pose_style, ref_pose_coeff_path)
+
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"coeff_path done in: {event_marker - start_time} seconds")
+
+    print(f"args.face3dvis: {args.face3dvis} ")
 
     # 3dface render
     if args.face3dvis:
         from src.face3d.visualize import gen_composed_video
         gen_composed_video(args, device, first_coeff_path, coeff_path, audio_path, os.path.join(save_dir, '3dface.mp4'))
     
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"Before Face Render: {event_marker - start_time} seconds")
+
     #coeff2video
     data = get_facerender_data(coeff_path, crop_pic_path, first_coeff_path, audio_path, 
                                 batch_size, input_yaw_list, input_pitch_list, input_roll_list,
                                 expression_scale=args.expression_scale, still_mode=args.still, preprocess=args.preprocess, size=args.size)
     
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"After Face Render: {event_marker - start_time} seconds")
+
     result = animate_from_coeff.generate(data, save_dir, pic_path, crop_info, \
                                 enhancer=args.enhancer, background_enhancer=args.background_enhancer, preprocess=args.preprocess, img_size=args.size)
+    
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"After animate_from_coeff: {event_marker - start_time} seconds")
     
     shutil.move(result, save_dir+'.mp4')
 
