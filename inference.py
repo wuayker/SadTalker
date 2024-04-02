@@ -14,6 +14,7 @@ from src.utils.init_path import init_path
 
 def main(args):
     #torch.backends.cudnn.enabled = False
+    start_time = time.time()  # Record the start time
 
     pic_path = args.source_image
     audio_path = args.driven_audio
@@ -42,7 +43,10 @@ def main(args):
     #crop image and extract 3dmm from image
     first_frame_dir = os.path.join(save_dir, 'first_frame_dir')
     os.makedirs(first_frame_dir, exist_ok=True)
-    print('3DMM Extraction for source image')
+
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"3DMM Extraction for source image: {event_marker - start_time} seconds")
+
     first_coeff_path, crop_pic_path, crop_info =  preprocess_model.generate(pic_path, first_frame_dir, args.preprocess,\
                                                                              source_image_flag=True, pic_size=args.size)
     if first_coeff_path is None:
@@ -53,7 +57,10 @@ def main(args):
         ref_eyeblink_videoname = os.path.splitext(os.path.split(ref_eyeblink)[-1])[0]
         ref_eyeblink_frame_dir = os.path.join(save_dir, ref_eyeblink_videoname)
         os.makedirs(ref_eyeblink_frame_dir, exist_ok=True)
-        print('3DMM Extraction for the reference video providing eye blinking')
+
+        event_marker = time.time()  # Record the marker time after the code execution
+        print(f"3DMM Extraction for the reference video providing eye blinking: {event_marker - start_time} seconds")
+
         ref_eyeblink_coeff_path, _, _ =  preprocess_model.generate(ref_eyeblink, ref_eyeblink_frame_dir, args.preprocess, source_image_flag=False)
     else:
         ref_eyeblink_coeff_path=None
@@ -65,7 +72,10 @@ def main(args):
             ref_pose_videoname = os.path.splitext(os.path.split(ref_pose)[-1])[0]
             ref_pose_frame_dir = os.path.join(save_dir, ref_pose_videoname)
             os.makedirs(ref_pose_frame_dir, exist_ok=True)
-            print('3DMM Extraction for the reference video providing pose')
+
+            event_marker = time.time()  # Record the marker time after the code execution
+            print(f"3DMM Extraction for the reference video providing pose: {event_marker - start_time} seconds")
+
             ref_pose_coeff_path, _, _ =  preprocess_model.generate(ref_pose, ref_pose_frame_dir, args.preprocess, source_image_flag=False)
     else:
         ref_pose_coeff_path=None
@@ -88,6 +98,10 @@ def main(args):
                                 enhancer=args.enhancer, background_enhancer=args.background_enhancer, preprocess=args.preprocess, img_size=args.size)
     
     shutil.move(result, save_dir+'.mp4')
+
+    event_marker = time.time()  # Record the marker time after the code execution
+    print(f"The generated video is available: {event_marker - start_time} seconds")
+
     print('The generated video is named:', save_dir+'.mp4')
 
     if not args.verbose:
