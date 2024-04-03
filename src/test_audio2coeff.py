@@ -5,6 +5,8 @@ from scipy.io import savemat, loadmat
 from yacs.config import CfgNode as CN
 from scipy.signal import savgol_filter
 
+from functools import lru_cache
+
 import safetensors
 import safetensors.torch 
 
@@ -22,6 +24,7 @@ def load_cpk(checkpoint_path, model=None, optimizer=None, device="cpu"):
 
     return checkpoint['epoch']
 
+@lru_cache(maxsize=None)  # Setting maxsize to None means unlimited cache size
 class Audio2Coeff():
 
     def __init__(self, sadtalker_path, device):

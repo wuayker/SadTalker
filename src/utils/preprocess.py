@@ -13,6 +13,8 @@ from src.face3d.models import networks
 from scipy.io import loadmat, savemat
 from src.utils.croper import Preprocesser
 
+from functools import lru_cache
+
 
 import warnings
 
@@ -42,7 +44,7 @@ def split_coeff(coeffs):
             'trans': translations
         }
 
-
+@lru_cache(maxsize=None)  # Setting maxsize to None means unlimited cache size
 class CropAndExtract():
     def __init__(self, sadtalker_path, device):
 

@@ -13,6 +13,7 @@ from src.facerender.animate import AnimateFromCoeff
 from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
 from src.utils.init_path import init_path
+import inference
 
 # Global Variables Initialization
 global_vars = {
@@ -272,11 +273,9 @@ def generateAudioOverlay(data):
         shutil.rmtree(get_global_var("global_save_dir"))
 
 
-if __name__ == "__main__":
-    parser = ArgumentParser()
-    parser.add_argument("--step", choices=['initilize', 'stage', 'render'], required=True, help="Specify which step to execute.")
+if __name__ == '__main__':
 
-    #parser = ArgumentParser()
+    parser = ArgumentParser()  
     parser.add_argument("--driven_audio", default='./examples/driven_audio/bus_chinese.wav', help="path to driven audio")
     parser.add_argument("--source_image", default='./examples/source_image/full_body_1.png', help="path to source image")
     parser.add_argument("--ref_eyeblink", default=None, help="path to reference video providing eye blinking")
@@ -299,8 +298,6 @@ if __name__ == "__main__":
     parser.add_argument("--verbose",action="store_true", help="saving the intermedia output or not" ) 
     parser.add_argument("--old_version",action="store_true", help="use the pth other than safetensor version" ) 
 
-    print(f"args.face3dvis: {get_global_var('global_args_face3d')} ")
-
 
     # net structure and parameters
     parser.add_argument('--net_recon', type=str, default='resnet50', choices=['resnet18', 'resnet34', 'resnet50'], help='useless')
@@ -308,7 +305,6 @@ if __name__ == "__main__":
     parser.add_argument('--use_last_fc',default=False, help='zero initialize the last fc')
     parser.add_argument('--bfm_folder', type=str, default='./checkpoints/BFM_Fitting/')
     parser.add_argument('--bfm_model', type=str, default='BFM_model_front.mat', help='bfm model')
-
 
     # default renderer parameters
     parser.add_argument('--focal', type=float, default=1015.)
@@ -324,41 +320,6 @@ if __name__ == "__main__":
     else:
         args.device = "cpu"
 
-    extractPaths(args)
+    inference.main(args)
 
-    print("args are", args)
-    print("step is", args.step)
-
-    if args.step == 'initilize':
-        ZERO_startProcess()
-    elif args.step == 'stage':
-        ONE_AVtoCoeff()
-    elif args.step == 'render':
-        TWO_AVRender()
-
-
-def runCharacterAnimation(driven_audio, source_image, result_dir, still="still"):
-    """
-    Executes an audio-driven animation command with the given parameters.
-
-    Parameters:
-    - driven_audio: Path to the audio file to drive the animation.
-    - source_image: Path to the source image to animate.
-    - result_dir: Directory to store the resulting animation.
-    - still: Optional; specify "still" to run in still mode. Default is "still".
-    """
-    command = [
-        "python3.8",
-        "inference.py",
-        "--driven_audio", driven_audio,
-        "--source_image", source_image,
-        "--result_dir", result_dir,
-        "--still", still
-    ]
-    
-    try:
-        subprocess.run(command, check=True)
-        print("Command executed successfully.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing command: {e}")
 
