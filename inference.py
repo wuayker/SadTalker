@@ -17,7 +17,7 @@ def main(args):
     start_time = time.time()  # Record the start time
 
     pic_path = args.source_image
-    audio_path = args.driven_audio
+    audio_path_1 = args.driven_audio
     save_dir = os.path.join(args.result_dir, strftime("%Y_%m_%d_%H.%M.%S"))
     os.makedirs(save_dir, exist_ok=True)
     pose_style = args.pose_style
@@ -109,6 +109,7 @@ def main(args):
     event_marker = time.time()  # Record the marker time after the code execution
     print(f"After Face Render: {event_marker - start_time} seconds")
 
+    # This is the most expensive step in the Rendering TODO
     result = animate_from_coeff.generate(data, save_dir, pic_path, crop_info, \
                                 enhancer=args.enhancer, background_enhancer=args.background_enhancer, preprocess=args.preprocess, img_size=args.size)
     

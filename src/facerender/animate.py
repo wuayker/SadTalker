@@ -186,8 +186,6 @@ class AnimateFromCoeff():
 
         frame_num = x['frame_num']
 
-        tracker_t = time.time()
-        print(f"Generating video - Step-2 {tracker_t - start_t} seconds") 
 
         predictions_video = make_animation(source_image, source_semantics, target_semantics,
                                         self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
