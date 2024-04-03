@@ -17,7 +17,7 @@ def main(args):
     start_time = time.time()  # Record the start time
 
     pic_path = args.source_image
-    audio_path_1 = args.driven_audio
+    audio_path = args.driven_audio
     save_dir = os.path.join(args.result_dir, strftime("%Y_%m_%d_%H.%M.%S"))
     os.makedirs(save_dir, exist_ok=True)
     pose_style = args.pose_style
