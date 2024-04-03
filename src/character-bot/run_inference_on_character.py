@@ -238,7 +238,7 @@ def audio2Coeff(first_coeff_path, ref_eyeblink_coeff_path, ref_pose_coeff_path):
 
     coeff_path = get_global_var("global_audio_to_coeff").generate(batch, get_global_var("global_save_dir"), get_global_var("global_pose_style"), ref_pose_coeff_path)
 
-    print(f"args.face3dvis: {get_global_var("global_args_face3d")} ")
+    print(f"args.face3dvis: {get_global_var('global_args_face3d')} ")
 
     # 3dface render
     if get_global_var("global_args_face3d"):
