@@ -24,7 +24,6 @@ def load_cpk(checkpoint_path, model=None, optimizer=None, device="cpu"):
 
     return checkpoint['epoch']
 
-@lru_cache(maxsize=None)  # Setting maxsize to None means unlimited cache size
 class Audio2Coeff():
 
     def __init__(self, sadtalker_path, device):

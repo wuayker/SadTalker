@@ -32,7 +32,6 @@ try:
 except:
     in_webui = False
 
-@lru_cache(maxsize=None)  # Setting maxsize to None means unlimited cache size
 class AnimateFromCoeff():
 
     def __init__(self, sadtalker_path, device):

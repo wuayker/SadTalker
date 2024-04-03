@@ -44,7 +44,6 @@ def split_coeff(coeffs):
             'trans': translations
         }
 
-@lru_cache(maxsize=None)  # Setting maxsize to None means unlimited cache size
 class CropAndExtract():
     def __init__(self, sadtalker_path, device):
 

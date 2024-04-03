@@ -13,7 +13,7 @@ from src.facerender.animate import AnimateFromCoeff
 from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
 from src.utils.init_path import init_path
-import inference
+import inferGen
 
 # Global Variables Initialization
 global_vars = {
@@ -320,6 +320,4 @@ if __name__ == '__main__':
     else:
         args.device = "cpu"
 
-    inference.main(args)
-
-
+    inferGen.main(args)
