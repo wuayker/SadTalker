@@ -113,7 +113,7 @@ def main(args):
                                 enhancer=args.enhancer, background_enhancer=args.background_enhancer, preprocess=args.preprocess, img_size=args.size)
     
     event_marker = time.time()  # Record the marker time after the code execution
-    print(f"After animate_from_coeff: {event_marker - start_time} seconds")
+    print(f"After Generate steps: {event_marker - start_time} seconds")
     
     shutil.move(result, save_dir+'.mp4')
 
