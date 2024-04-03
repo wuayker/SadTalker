@@ -40,16 +40,12 @@ global_vars = {
 
     "global_preprocess_model":"",
     "global_audio_to_coeff":"",
-    "global_animate_from_coeff":""
-}
+    "global_animate_from_coeff":"",
 
-# Intermediatories Initialization
-
-intermediate_data = {
-    'first_coeff_path': None,
-    'ref_eyeblink_coeff_path': None,
-    'ref_pose_coeff_path': None,
-    'data_for_AVRender': None,  # Placeholder for data generated in ONE_AVtoCoeff
+    "first_coeff_path": "",
+    "ref_eyeblink_coeff_path": "",
+    "ref_pose_coeff_path": "",
+    "data_for_AVRender": "",  # Placeholder for data generated in ONE_AVtoCoeff
 }
 
 def set_global_var(var_name, value):
@@ -57,13 +53,6 @@ def set_global_var(var_name, value):
 
 def get_global_var(var_name):
     return global_vars[var_name]
-
-def set_intermediatory_var(var_name, value):
-    intermediate_data[var_name] = value
-
-def get_intermediatory_var(var_name):
-    return intermediate_data[var_name]
-
 
 def extractPaths(args):
     set_global_var("global_args", args)
@@ -151,9 +140,16 @@ def ZERO_startProcess():
     event_marker = time.time()  # Record the marker time after the code execution
     print(f"startProcess took: {event_marker - start_time} seconds")
 
-    set_intermediatory_var("first_coeff_path", first_coeff_path)
-    set_intermediatory_var("ref_eyeblink_coeff_path", ref_eyeblink_coeff_path)
-    set_intermediatory_var("ref_pose_coeff_path", first_coeff_path)
+    set_global_var("first_coeff_path", first_coeff_path)
+    set_global_var("ref_eyeblink_coeff_path", ref_eyeblink_coeff_path)
+    set_global_var("ref_pose_coeff_path", ref_pose_coeff_path)
+
+    print("first_coeff_path", first_coeff_path)
+
+    first_coeff_path = get_global_var("first_coeff_path")
+    print("fetched in initilize first_coeff_path", first_coeff_path)
+
+    print("After setting in ZERO_startProcess:", global_vars)
 
 
     #return first_coeff_path, ref_eyeblink_coeff_path, ref_pose_coeff_path
@@ -162,21 +158,25 @@ def ZERO_startProcess():
 def ONE_AVtoCoeff():
     start_time = time.time()  # Record the start timer
 
-    coeff_path = audio2Coeff(get_intermediatory_var("first_coeff_path"), get_intermediatory_var("ref_eyeblink_coeff_path"), get_intermediatory_var("ref_pose_coeff_path"))
+    first_coeff_path = get_global_var("first_coeff_path")
+    print("first_coeff_path", first_coeff_path)
 
-    data = video2Coeff(coeff_path, get_intermediatory_var("first_coeff_path"))
+
+    coeff_path = audio2Coeff(first_coeff_path, get_global_var("ref_eyeblink_coeff_path"), get_global_var("ref_pose_coeff_path"))
+
+    data = video2Coeff(coeff_path, get_global_var("first_coeff_path"))
 
     event_marker = time.time()  # Record the marker time after the code execution
     print(f"AVtoCoeff took: {event_marker - start_time} seconds")
 
-    set_intermediatory_var("data_for_AVRender", data)
+    set_global_var("data_for_AVRender", data)
 
     #return data
 
 def TWO_AVRender():
     start_time = time.time()  # Record the start timer
 
-    generateAudioOverlay(get_intermediatory_var("data_for_AVRender"))
+    generateAudioOverlay(get_global_var("data_for_AVRender"))
 
     event_marker = time.time()  # Record the marker time after the code execution
     print(f"AVRender took: {event_marker - start_time} seconds")
