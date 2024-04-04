@@ -274,7 +274,7 @@ class AnimateFromCoeff():
             
             save_video_with_watermark(enhanced_path, new_audio_path, av_path_enhancer, watermark= False)
             print(f'The generated video is named {video_save_dir}/{video_name_enhancer}')
-            os.remove(enhanced_path)
+            #os.remove(enhanced_path)
 
             tracker_t = time.time()
             print(f"Generating video - Step-15 {tracker_t - start_t} seconds") 
