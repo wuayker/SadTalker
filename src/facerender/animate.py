@@ -156,7 +156,7 @@ class AnimateFromCoeff():
 
         return checkpoint['epoch']
 
-    def generate(self, x, video_save_dir, pic_path, crop_info, enhancer=None, background_enhancer=None, preprocess='crop', img_size=256):
+    def generate(self, x, video_save_dir, pic_path, crop_info, enhancer=None, background_enhancer=None, preprocess='crop', img_size=256, seed_video_path):
 
         start_t = time.time()
 
@@ -219,6 +219,9 @@ class AnimateFromCoeff():
         av_path = os.path.join(video_save_dir, video_name)
         return_path = av_path 
         print(f"After Step 3 Video Name is {video_name} and Video Path is {video_save_dir}  ") 
+
+        if seed_video_path:
+            video_save_dir = seed_video_path
 
         audio_path =  x['audio_path'] 
         audio_name = os.path.splitext(os.path.split(audio_path)[-1])[0]
