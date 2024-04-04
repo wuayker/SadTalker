@@ -112,8 +112,8 @@ def main(args):
     print(f"After Face Render: {event_marker - start_time} seconds")
 
     # This is the most expensive step in the Rendering TODO
-    result = animate_from_coeff.generate(data, save_dir, pic_path, crop_info, \
-                                enhancer=args.enhancer, background_enhancer=args.background_enhancer, preprocess=args.preprocess, img_size=args.size. seed_video_path)
+    result = animate_from_coeff.generate(data, save_dir, pic_path, crop_info, seed_video_path, \
+                                enhancer=args.enhancer, background_enhancer=args.background_enhancer, preprocess=args.preprocess, img_size=args.size)
     
     event_marker = time.time()  # Record the marker time after the code execution
     print(f"After Generate steps: {event_marker - start_time} seconds")
@@ -138,6 +138,8 @@ if __name__ == '__main__':
     parser.add_argument("--ref_pose", default=None, help="path to reference video providing pose")
     parser.add_argument("--checkpoint_dir", default='./checkpoints', help="path to output")
     parser.add_argument("--result_dir", default='./results', help="path to output")
+    parser.add_argument("--seed_video", default='None', help="path to pre processed Animated Video")
+    parser.add_argument("--character", default='None', help="Name of Animated Character")
     parser.add_argument("--pose_style", type=int, default=0,  help="input pose style from [0, 46)")
     parser.add_argument("--batch_size", type=int, default=2,  help="the batch size of facerender")
     parser.add_argument("--size", type=int, default=256,  help="the image size of the facerender")

@@ -156,7 +156,8 @@ class AnimateFromCoeff():
 
         return checkpoint['epoch']
 
-    def generate(self, x, video_save_dir, pic_path, crop_info, enhancer=None, background_enhancer=None, preprocess='crop', img_size=256, seed_video_path):
+    def generate(self, x, video_save_dir, pic_path, crop_info, seed_video_path, enhancer=None, background_enhancer=None, preprocess='crop', img_size=256):
+        print(f"Seed Video Path is  {seed_video_path}  ") 
 
         start_t = time.time()
 
@@ -187,7 +188,7 @@ class AnimateFromCoeff():
             roll_c_seq = None
 
         frame_num = x['frame_num']
-
+            
 
         predictions_video = make_animation(source_image, source_semantics, target_semantics,
                                         self.generator, self.kp_extractor, self.he_estimator, self.mapping, 
