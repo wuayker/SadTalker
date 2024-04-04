@@ -199,9 +199,6 @@ class AnimateFromCoeff():
         predictions_video = predictions_video.reshape((-1,)+predictions_video.shape[2:])
         predictions_video = predictions_video[:frame_num]
 
-        tracker_t = time.time()
-        print(f"Generating video - Step-4 {tracker_t - start_t} seconds") 
-
         video = []
         for idx in range(predictions_video.shape[0]):
             image = predictions_video[idx]
@@ -209,33 +206,19 @@ class AnimateFromCoeff():
             video.append(image)
         result = img_as_ubyte(video)
 
-        tracker_t = time.time()
-        print(f"Generating video - Step-5 {tracker_t - start_t} seconds") 
-
         ### the generated video is 256x256, so we keep the aspect ratio, 
         original_size = crop_info[0]
         if original_size:
             result = [ cv2.resize(result_i,(img_size, int(img_size * original_size[1]/original_size[0]) )) for result_i in result ]
 
-        tracker_t = time.time()
-        print(f"Generating video - Step-6 {tracker_t - start_t} seconds") 
-
         video_name = x['video_name']  + '.mp4'
         path = os.path.join(video_save_dir, 'temp_'+video_name)
         
-        tracker_t = time.time()
-        print(f"Generating video - Step-7 {tracker_t - start_t} seconds") 
-
         imageio.mimsave(path, result,  fps=float(25))
-
-        tracker_t = time.time()
-        print(f"Generating video - Step-8 {tracker_t - start_t} seconds") 
 
         av_path = os.path.join(video_save_dir, video_name)
         return_path = av_path 
-
-        tracker_t = time.time()
-        print(f"Generating video - Step-9 {tracker_t - start_t} seconds") 
+        print(f"After Step 3 Video Name is {video_name} and Video Path is {video_save_dir}  ") 
 
         audio_path =  x['audio_path'] 
         audio_name = os.path.splitext(os.path.split(audio_path)[-1])[0]
@@ -250,13 +233,11 @@ class AnimateFromCoeff():
         word.export(new_audio_path, format="wav")
 
         tracker_t = time.time()
-        print(f"Generating video - Step-10 {tracker_t - start_t} seconds") 
+        print(f"Generating video - Step-4 {tracker_t - start_t} seconds") 
 
         save_video_with_watermark(path, new_audio_path, av_path, watermark= False)
         print(f'The generated video is named {video_save_dir}/{video_name}') 
 
-        tracker_t = time.time()
-        print(f"Generating video - Step-11 {tracker_t - start_t} seconds") 
 
         if 'full' in preprocess.lower():
             # only add watermark to the full image.
@@ -269,7 +250,7 @@ class AnimateFromCoeff():
             full_video_path = av_path 
 
         tracker_t = time.time()
-        print(f"Generating video - Step-12 {tracker_t - start_t} seconds") 
+        print(f"Generating video - Step-5 {tracker_t - start_t} seconds") 
 
         #### paste back then enhancers
         if enhancer:
