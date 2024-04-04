@@ -279,8 +279,8 @@ class AnimateFromCoeff():
             tracker_t = time.time()
             print(f"Generating video - Step-15 {tracker_t - start_t} seconds") 
 
-        os.remove(path)
-        os.remove(new_audio_path)
+        #os.remove(path)
+        #os.remove(new_audio_path)
 
         return return_path
 
